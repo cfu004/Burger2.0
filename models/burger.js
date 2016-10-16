@@ -1,24 +1,70 @@
-var orm = require("../config/orm.js");
+"use strict";
 
-var model = {
+module.exports = function(sequelize, DataTypes) {
+  var Burger = sequelize.define("burger", {
+    burger_name: DataTypes.STRING,
+    devoured: { type: DataTypes.BOOLEAN, defaultValue: false },
+  }, {
+    // don't add the timestamp attributes (updatedAt, createdAt)
+      timestamps: false,
 
-  selectAll : function(callback)  {
-    orm.selectAll("burgers", function(data) {
-      callback(data);
+    // don't delete database entries but set the newly added attribute deletedAt
+    // to the current date (when deletion was done). paranoid will only work if
+    // timestamps are enabled
+      paranoid: true,
+
+    // don't use camelcase for automatically added attributes but underscore style
+    // so updatedAt will be updated_at
+    underscored: true,
+
+    // disable the modification of tablenames; By default, sequelize will automatically
+    // transform all passed model names (first parameter of define) into plural.
+    // if you don't want that, set the following
+    freezeTableName: true,
+
+    // define the table's name
+    tableName: 'burgers',
+
+    
+       
+      
     });
-  },
 
-  insertOne : function(burgerName, burgerDevoured, callback)  {
-    orm.insertOne("burgers", burgerName, burgerDevoured, function(data) {
-      callback(data);
-    });
-  },
 
-  updateOne : function(burgerID, callback)  {
-    orm.updateOne("burgers", burgerID, function(data) {
-      callback(data);
-    });
-  }
+  return Burger;
 };
 
-module.exports = model;
+
+
+
+
+
+
+
+
+
+//FROM ORM=================================================================//
+// var orm = require("../config/orm.js");
+
+// var model = {
+
+//   selectAll : function(callback)  {
+//     orm.selectAll("burgers", function(data) {
+//       callback(data);
+//     });
+//   },
+
+//   insertOne : function(burgerName, burgerDevoured, callback)  {
+//     orm.insertOne("burgers", burgerName, burgerDevoured, function(data) {
+//       callback(data);
+//     });
+//   },
+
+//   updateOne : function(burgerID, callback)  {
+//     orm.updateOne("burgers", burgerID, function(data) {
+//       callback(data);
+//     });
+//   }
+// };
+
+// module.exports = model;
